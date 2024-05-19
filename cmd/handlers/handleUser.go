@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/kakuzops/echo-crud/cmd/models"
 	"github.com/kakuzops/echo-crud/cmd/repositories"
@@ -17,4 +18,21 @@ func CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusCreated, newUser)
+}
+
+func HandleUpdateUser(c echo.Context) error {
+	id := c.Param("id")
+
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	user := models.User{}
+	c.Bind(&user)
+	updatedUser, err := repositories.UpdateUser(user, idInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, updatedUser)
 }

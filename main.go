@@ -15,5 +15,6 @@ func main() {
 
 	e.POST("/users", handlers.CreateUser)
 	e.POST("/measurements", handlers.CreateMeasurement)
+	e.PUT("/users/:id", handlers.HandleUpdateUser)
 	e.Logger.Fatal(e.Start(":8080"))
 }
